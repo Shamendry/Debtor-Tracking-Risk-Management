@@ -336,7 +336,8 @@ if page == "📊  Risk Overview":
                     showocean=True, oceancolor="#d6e8f7",
                     showcountries=True, countrycolor="#b0bec5", bgcolor="white",
                     lataxis_range=[-58,82], lonaxis_range=[-170,180]),
-                coloraxis_colorbar=dict(title="Risk Score", len=0.55, thickness=14, outlinewidth=0),
+                coloraxis_colorbar=dict(title="Risk Score", len=0.55, thickness=14, outlinewidth=0,
+                    tickfont=dict(color="#2c3e50"), title_font=dict(color="#2c3e50")),
                 margin=dict(t=0,b=0,l=0,r=0))
             st.plotly_chart(fig_map, use_container_width=True)
             st.caption("Bubble size = outstanding balance. Colour = avg risk score. Hover for details.")
