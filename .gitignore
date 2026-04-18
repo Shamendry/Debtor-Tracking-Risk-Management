@@ -1,0 +1,18 @@
+# Ignore everything by default
+*
+
+# Allow specific files and folders
+!.gitignore
+!requirements.txt
+!README.md
+
+# Allow only these specific files
+!Debtor Risk Management/
+!Debtor Risk Management/Dashboard/
+!Debtor Risk Management/Dashboard/app_1.py
+!Debtor Risk Management/data_raw/
+!Debtor Risk Management/data_raw/Debtor Project.ipynb
+
+# Python cache
+__pycache__/
+*.pyc
