@@ -63,7 +63,7 @@ CSS = f"""
     [data-testid="stSidebar"] .stRadio [aria-checked="true"] {{ background: #1e3a5f; border-radius: 8px; }}
     .kpi-card {{ background:#f8f9fa; border-radius:10px; padding:16px; text-align:center; border:1px solid #e9ecef; }}
     .kpi-value {{ font-size:28px; font-weight:700; margin:0; }}
-    .kpi-label {{ font-size:12px; color:#6c757d; margin:4px 0 0; }}
+    .kpi-label {{ font-size:12px; color:#6c757d; margin:4px 0 0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }}
     .badge-high {{ background:#fdecea; color:#c0392b; padding:4px 12px; border-radius:12px; font-size:13px; font-weight:600; }}
     .badge-med  {{ background:#fef3e2; color:#d68910; padding:4px 12px; border-radius:12px; font-size:13px; font-weight:600; }}
     .badge-low  {{ background:#eafaf1; color:#1e8449; padding:4px 12px; border-radius:12px; font-size:13px; font-weight:600; }}
@@ -229,7 +229,7 @@ if page == "📊  Risk Overview":
     kpi_card(k2, f"{_high_n:,}", f"High risk ({_high_pct}%)", COLOUR_HIGH)
     kpi_card(k3, f"{_med_n:,}",  f"Medium risk ({_med_pct}%)", COLOUR_MED)
     kpi_card(k4, f"{_low_n:,}", f"Low risk ({_low_pct}%)", COLOUR_LOW)
-    kpi_card(k5, f"${_total_usd/1e6:.1f}M", "Total outstanding (USD)", COLOUR_ACCENT)
+    kpi_card(k5, f"${_total_usd/1e6:.1f}M", "Outstanding (USD)", COLOUR_ACCENT)
     kpi_card(k6, f"{kpi.get('avg_overdue_days',0):.0f}d", "Avg overdue days", "#6c757d")
 
     st.markdown("<br>", unsafe_allow_html=True)
@@ -511,12 +511,12 @@ elif page == "🔍  Customer Explorer":
             aging_cols = ["outstanding_0_30","outstanding_31_60","outstanding_61_90","outstanding_91_plus"]
             if all(c in cust.index for c in aging_cols):
                 inv_data = pd.DataFrame({
-                    "Age band": ["Current (0-30d)","Late (31-60d)","Very late (61-90d)","Severely overdue (91+d)"],
+                    "Age band": ["Current\n(0-30d)","Late\n(31-60d)","Very late\n(61-90d)","Severely\noverdue (91+d)"],
                     "Outstanding (USD)": [float(cust[c]) for c in aging_cols]})
             else:
                 od = int(cust["max_overdue_days"])
                 inv_data = pd.DataFrame({
-                    "Age band": ["Current (0-30d)","Late (31-60d)","Very late (61-90d)","Severely overdue (91+d)"],
+                    "Age band": ["Current\n(0-30d)","Late\n(31-60d)","Very late\n(61-90d)","Severely\noverdue (91+d)"],
                     "Outstanding (USD)": [max(0,30-min(od,30)), max(0,min(od,60)-30),
                                           max(0,min(od,90)-60), max(0,od-90)]})
             fig_inv = px.bar(inv_data, x="Age band", y="Outstanding (USD)", color="Age band",
