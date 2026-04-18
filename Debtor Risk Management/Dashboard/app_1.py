@@ -511,12 +511,12 @@ elif page == "🔍  Customer Explorer":
             aging_cols = ["outstanding_0_30","outstanding_31_60","outstanding_61_90","outstanding_91_plus"]
             if all(c in cust.index for c in aging_cols):
                 inv_data = pd.DataFrame({
-                    "Age band": ["Current\n(0-30d)","Late\n(31-60d)","Very late\n(61-90d)","Severely\noverdue (91+d)"],
+                    "Age band": ["0-30 days","31-60 days","61-90 days","91+ days"],
                     "Outstanding (USD)": [float(cust[c]) for c in aging_cols]})
             else:
                 od = int(cust["max_overdue_days"])
                 inv_data = pd.DataFrame({
-                    "Age band": ["Current\n(0-30d)","Late\n(31-60d)","Very late\n(61-90d)","Severely\noverdue (91+d)"],
+                    "Age band": ["0-30 days","31-60 days","61-90 days","91+ days"],
                     "Outstanding (USD)": [max(0,30-min(od,30)), max(0,min(od,60)-30),
                                           max(0,min(od,90)-60), max(0,od-90)]})
             fig_inv = px.bar(inv_data, x="Age band", y="Outstanding (USD)", color="Age band",
