@@ -285,9 +285,9 @@ if page == "📊  Risk Overview":
             def top_factor(row):
                 vals = row[shap_cols_all]
                 return "N/A" if vals.isna().all() else friendly_label(vals.astype(float).idxmax().replace("shap_",""))
-            top10["Top Risk Factor"] = top10_shap.apply(top_factor, axis=1)
-            # Remove column if all values are N/A
-            if top10["Top Risk Factor"].eq("N/A").all():
+            top10["Top Risk Factor"] = top10_shap.apply(top_factor, axis=1).values
+            # Remove column if all values are N/A or null
+            if top10["Top Risk Factor"].isna().all() or top10["Top Risk Factor"].astype(str).isin(["N/A","nan","None"]).all():
                 top10.drop(columns=["Top Risk Factor"], inplace=True)
         dcols = ["cuscode"] + ([name_col] if name_col else [])
         for c in ["country","cluster_name","risk_score","risk_bucket","total_outstanding_usd",
