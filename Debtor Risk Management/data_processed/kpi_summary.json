@@ -1,0 +1,19 @@
+{
+  "total_customers": 656,
+  "high_risk_count": 332,
+  "medium_risk_count": 155,
+  "low_risk_count": 169,
+  "total_outstanding_usd": 28694741.596007466,
+  "total_outstanding_lkr": 8263754853.6,
+  "high_risk_outstanding_usd": 14065365.222635845,
+  "high_risk_outstanding_lkr": 3908523994.3,
+  "medium_risk_outstanding_usd": 3584079.7163581382,
+  "low_risk_outstanding_usd": 11045296.657013483,
+  "avg_overdue_days": 182.25773926257574,
+  "data_as_of": "2025-10-11",
+  "model_roc_auc": 0.8645,
+  "model_cv_f1_mean": 0.8704,
+  "model_cv_f1_std": 0.0626,
+  "model_features_count": 20,
+  "shap_file": "shap_values_all_customers.csv"
+}
