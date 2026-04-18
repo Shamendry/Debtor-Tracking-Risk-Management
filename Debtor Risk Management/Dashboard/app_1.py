@@ -157,8 +157,10 @@ risk_df["customerid"]      = risk_df["customerid"].astype(str)
 _total     = kpi["total_customers"]
 _high_n    = kpi["high_risk_count"]
 _med_n     = kpi["medium_risk_count"]
-_high_pct  = _high_n / _total * 100
-_med_pct   = _med_n  / _total * 100
+_low_n     = kpi.get("low_risk_count", _total - _high_n - _med_n)
+_high_pct  = round(_high_n / _total * 100)
+_med_pct   = round(_med_n  / _total * 100)
+_low_pct   = 100 - _high_pct - _med_pct
 _high_usd  = kpi.get("high_risk_outstanding_usd", 0)
 _total_usd = kpi["total_outstanding_usd"]
 _high_usd_pct = (_high_usd / _total_usd * 100) if _total_usd else 0
@@ -224,9 +226,9 @@ if page == "📊  Risk Overview":
         col.markdown(f"<div class='kpi-card'><p class='kpi-value' style='color:{colour};'>{value}</p>"
                      f"<p class='kpi-label'>{label}</p></div>", unsafe_allow_html=True)
     kpi_card(k1, f"{_total:,}", "Total customers")
-    kpi_card(k2, f"{_high_n:,}", f"High risk ({_high_pct:.0f}%)", COLOUR_HIGH)
-    kpi_card(k3, f"{_med_n:,}",  f"Medium risk ({_med_pct:.0f}%)", COLOUR_MED)
-    kpi_card(k4, f"{kpi['low_risk_count']:,}", f"Low risk ({kpi['low_risk_count']/_total*100:.0f}%)", COLOUR_LOW)
+    kpi_card(k2, f"{_high_n:,}", f"High risk ({_high_pct}%)", COLOUR_HIGH)
+    kpi_card(k3, f"{_med_n:,}",  f"Medium risk ({_med_pct}%)", COLOUR_MED)
+    kpi_card(k4, f"{_low_n:,}", f"Low risk ({_low_pct}%)", COLOUR_LOW)
     kpi_card(k5, f"${_total_usd/1e6:.1f}M", "Total outstanding (USD)", COLOUR_ACCENT)
     kpi_card(k6, f"{kpi.get('avg_overdue_days',0):.0f}d", "Avg overdue days", "#6c757d")
 
@@ -523,7 +525,8 @@ elif page == "🔍  Customer Explorer":
             fig_inv.update_traces(textposition="outside")
             plotly_defaults(fig_inv)
             max_inv = inv_data["Outstanding (USD)"].max()
-            fig_inv.update_layout(height=240, showlegend=False, yaxis=dict(range=[0,max(max_inv*1.3,1)]))
+            fig_inv.update_layout(height=280, showlegend=False, yaxis=dict(range=[0,max(max_inv*1.3,1)]),
+                                   xaxis=dict(tickangle=0))
             st.plotly_chart(fig_inv, use_container_width=True)
             st.caption("Outstanding balance split by how long each invoice has been unpaid.")
 
@@ -537,7 +540,8 @@ elif page == "🔍  Customer Explorer":
                 color_discrete_sequence=[COLOUR_ACCENT,COLOUR_LOW,COLOUR_HIGH,COLOUR_MED], text="Count")
             fig_doc.update_traces(textposition="outside")
             plotly_defaults(fig_doc)
-            fig_doc.update_layout(height=240, showlegend=False,
+            fig_doc.update_layout(height=280, showlegend=False,
+                                   xaxis=dict(tickangle=0),
                                    yaxis=dict(range=[0, max(doc_df["Count"].max()*1.35, 1)]))
             st.plotly_chart(fig_doc, use_container_width=True)
 
